@@ -15,14 +15,6 @@ router.post('/investors', async(req, res, next) => {
 })
 
 
-router.get('/investors', async (req, res, next) => {
-  try {
-    res.json("GET INVESTORS")
-  } catch (err) {
-    next(err)
-  }
-})
-
 router.use((req, res, next) => {
   const err = new Error("API route not found")
   err.status = 404;
