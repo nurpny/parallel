@@ -15,20 +15,35 @@ export default class InvestorForm extends Component {
       address: "",
       state: "",
       zipcode: "",
-      phone: ""
+      phone: "",
+      fileUpload: ""
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleFileChange = this.handleFileChange.bind(this)
   }
 
   handleChange(evt) {
     this.setState({ [evt.target.name]: evt.target.value })
-
   }
+
+  handleFileChange(evt) {
+    this.setState({ fileUpload: evt.target.files[0] })
+  }
+
   async handleSubmit(evt) {
     evt.preventDefault()
     try {
-      const {data} = await axios.post(url, this.state)
+      const investorForm = new FormData();
+      for (let key in this.state) {
+        if (key !== "fileUpload") {
+          investorForm.append(key, this.state[key])
+        }
+      }
+      if (this.state.fileUpload !== "") {
+        investorForm.append("fileUpload", this.state.fileUpload)
+      }
+      const { data } = await axios.post(url, investorForm)
       alert("Form submitted")
     } catch (err) {
       console.error(err)
@@ -78,7 +93,13 @@ export default class InvestorForm extends Component {
             <label className='col-form-label'>Zipcode: </label>
             <input className='col-form-sm' type='text' name='zipcode' required onChange={this.handleChange} />
           </div>
-        <button type='submit' className="btn btn-primary">>Submit</button>
+
+          <div className='form-group row custom-file mb-4'>
+            <label className='custom-file-label' htmlFor='customFile'>Upload files: </label>
+            <input type='file' className='custom-file-input col-sm' id='customFile' onChange={this.handleFileChange} />
+          </div>
+
+          <button type='submit' className="btn btn-primary">Submit</button>
 
         </form>
 
