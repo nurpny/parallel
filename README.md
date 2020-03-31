@@ -1,6 +1,6 @@
-## This is a simple app where a user can input information and upload a file
+# This is a simple app where a user can input information and upload a file
 
-## built using Express & React
+# Built using Express & React
 
 
 # To Start the App
