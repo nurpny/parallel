@@ -29,7 +29,8 @@ module.exports = db.define('Investor', {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      notEmpty: true
+      notEmpty: true,
+      is: /^[2-9]\d{2}-\d{3}-\d{4}$/
     }
   },
   address: {
@@ -50,7 +51,8 @@ module.exports = db.define('Investor', {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      notEmpty: true
+      notEmpty: true,
+      is: /^\d{5}$/
     }
   },
   fileUpload: {
