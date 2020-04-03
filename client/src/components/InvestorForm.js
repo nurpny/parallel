@@ -5,6 +5,15 @@ import Address from './Address'
 
 const url = "http://localhost:8000/api/investors"
 
+const currentDate = new Date()
+let options = { year: 'numeric', month: '2-digit', day: '2-digit' }
+const dateTimeFormat = new Intl.DateTimeFormat('en-US', options)
+const [{ value: mo }, , { value: dt }, , { value: yr }] = dateTimeFormat.formatToParts(currentDate)
+const maxDate = `${yr - 18}-${mo}-${dt}`
+const minDate = `${yr - 120}-${mo}-${dt}`
+
+
+
 export default class InvestorForm extends Component {
   constructor(props) {
     super(props)
@@ -34,7 +43,6 @@ export default class InvestorForm extends Component {
   handlePlacesSelect() {
     let addressObj = this.autocomplete.getPlace();
     let address = addressObj.address_components;
-    console.log(address);
     this.setState({
       address: `${address[0].long_name} ${address[1].long_name} ${address[4].long_name}`,
       state: address[5].short_name,
@@ -45,8 +53,6 @@ export default class InvestorForm extends Component {
 
   handleChange(evt) {
     this.setState({ [evt.target.name]: evt.target.value })
-    console.log("handlechange called", "state now", this.state)
-
   }
 
   handleFileChange(evt) {
@@ -75,12 +81,7 @@ export default class InvestorForm extends Component {
   }
 
   render() {
-    const currentDate = new Date()
-    let options = { year: 'numeric', month: '2-digit', day: '2-digit' }
-    const dateTimeFormat = new Intl.DateTimeFormat('en-US', options)
-    const [{ value: mo }, , { value: dt }, , { value: yr }] = dateTimeFormat.formatToParts(currentDate)
-    const maxDate = `${yr - 18}-${mo}-${dt}`
-    const minDate = `${yr - 120}-${mo}-${dt}`
+
 
 
     return (

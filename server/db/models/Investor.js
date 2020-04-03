@@ -3,6 +3,13 @@ const db = require('../db')
 
 const states = ["AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
 
+const currentDate = new Date()
+let options = { year: 'numeric', month: '2-digit', day: '2-digit' }
+const dateTimeFormat = new Intl.DateTimeFormat('en-US', options)
+const [{ value: mo }, , { value: dt }, , { value: yr }] = dateTimeFormat.formatToParts(currentDate)
+const maxDate = `${yr - 18}-${mo}-${dt}`
+const minDate = `${yr - 120}-${mo}-${dt}`
+
 module.exports = db.define('Investor', {
   firstName: {
     type: Sequelize.STRING,
@@ -22,7 +29,9 @@ module.exports = db.define('Investor', {
     type: Sequelize.DATE,
     allowNull: false,
     validate: {
-      notEmpty: true
+      notEmpty: true,
+      isAfter: minDate,
+      isBefore: maxDate,
     }
   },
   phone: {
